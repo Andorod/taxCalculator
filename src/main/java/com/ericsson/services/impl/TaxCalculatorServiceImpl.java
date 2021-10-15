@@ -8,6 +8,7 @@ import com.ericsson.model.Item;
 import com.ericsson.model.ShoppingCart;
 import com.ericsson.services.TaxCalculatorService;
 import com.ericsson.utils.ErrorConstants;
+import com.ericsson.utils.ShoppingCartPrinter;
 
 @Service
 public class TaxCalculatorServiceImpl implements TaxCalculatorService {
@@ -16,6 +17,8 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 		if (Objects.isNull(sc) || Objects.isNull(sc.getItemList()) || sc.getItemList().isEmpty()) {
 			throw new RuntimeException(ErrorConstants.EMPTY_OR_NULL_SHOPPING_CART_ERROR_MSG);
 		}
+		
+		ShoppingCartPrinter.printShoppingCart(sc, true);
 		
 		double salesTax = 0.0;
 		double totalAmount = 0.0;
@@ -29,6 +32,8 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 		
 		sc.setSalesTax(salesTax);
 		sc.setTotalAmount(totalAmount);
+		
+		ShoppingCartPrinter.printShoppingCart(sc, false);
 	}
 	
 	private void calculateItemTaxes(Item it) {

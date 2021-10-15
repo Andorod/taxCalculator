@@ -84,4 +84,14 @@ public class Item {
 		return amount * unitPriceBeforeTaxes;
 	}
 
+	public String toString(boolean beforeTaxes) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(amount).append(" ")
+		.append(imported?"imported ":"")
+		.append(description).append(beforeTaxes?
+				" at "+ String.format("%.2f", getPriceBeforetaxes()):
+					" "+String.format("%.2f",getPriceAfterTaxes()));
+		return sb.toString();
+	}
+
 }

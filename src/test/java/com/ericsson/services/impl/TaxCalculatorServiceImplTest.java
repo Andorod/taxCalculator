@@ -32,6 +32,7 @@ class TaxCalculatorServiceImplTest {
 	@Test
 	void testCalculateShoppingCartTaxes_OK_baseCase() {
 
+		System.out.println("\nTest 1: Base case");
 		ShoppingCart sc = new ShoppingCart(
 				Arrays.asList(
 						new Item(1, ItemType.FOOD, true, "box of chocolates", 10.0),
@@ -60,10 +61,13 @@ class TaxCalculatorServiceImplTest {
 	@Test
 	void testCalculateShoppingCartTaxes_OK() {
 
+		System.out.println("\nTest 2: Different data set");
+		
 		ShoppingCart sc = new ShoppingCart(
 				Arrays.asList(
 						new Item(2, ItemType.OTHER, false, "flowers", 15.0),
-						new Item(1, ItemType.OTHER, true, "bottle of perfume", 47.5)));
+						new Item(4, ItemType.OTHER, true, "bottle of perfume", 47.5),
+						new Item(1, ItemType.BOOK, false, "\"Introduction to Java Programming\"", 30.25)));
 
 		assertEquals(0.0, sc.getSalesTax());
 		assertEquals(0.0, sc.getTotalAmount());
@@ -80,6 +84,11 @@ class TaxCalculatorServiceImplTest {
 		it = sc.getItemList().get(1);
 		assertTrue(it.getSalesTax() >= it.getPriceBeforetaxes() * 0.1);
 		assertTrue(it.getImportTax() >= it.getPriceBeforetaxes() * 0.05);
+		
+		// Second item -> book (no sales tax), not imported
+		it = sc.getItemList().get(2);
+		assertEquals(0.0, it.getSalesTax());
+		assertEquals(0.0, it.getImportTax());
 
 		assertNotEquals(0.0, sc.getSalesTax());
 		assertNotEquals(0.0, sc.getTotalAmount());
